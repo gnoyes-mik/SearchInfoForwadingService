@@ -1,0 +1,13 @@
+[ConsumerConfig]
+- KafkaConsumer Configuration
+
+[CustomConsumer]
+- Kafka에서 주기적으로 메시지를 꺼낸다
+
+
+Queue가 있어야된다.
+Kafka에서 꺼낸 메시지는 서버 내부 큐에 쌓아두었다가 일정 사이즈이상 혹은 일정 주기가 지나면 검색서버로 쏴주어야한다 (CustomConsumer 주기도 그에 맞게 설정 필요)
+검색서버로 쏴줄때 실패할 경우를 생각해서 retryQueue를 하나 더 두어 실패 시 따로 저장해둔다
+또한 실패 시 CustomConsumer가 kafka에서 메시지를 잠시동안 꺼내오지 않도록 제어하는 Flag를 둔다(메모리 오버헤드 방지)
+
+검색 서버로 전송 성공하면 CustomConsumer.commit()을 하여 보낸 메시지까지 기록해 둔다
